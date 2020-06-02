@@ -36,7 +36,7 @@ class FastMVSNet(nn.Module):
         batch_size, num_view, img_channel, img_height, img_width = list(img_list.size())
         gt_depth_img = data_batch['gt_depth_img']
         gt_depth_img = F.interpolate(F.interpolate(gt_depth_img, scale_factor=0.5), scale_factor=8)
-        gt_depth_img = gt_depth_img.unsqueeze(1).repeat(1, 3, 1, 1, 1)
+        gt_depth_img = gt_depth_img.unsqueeze(1).expand(-1, num_view, -1, -1, -1)
         #print("gt_depth_img", gt_depth_img.shape)
         img_list = torch.cat((img_list, gt_depth_img), dim=2)
         cam_params_list = data_batch["cam_params_list"]
