@@ -1,6 +1,8 @@
-# Fast-MVSNet
+# Fast-MVSNet Experiment
 
-PyTorch implementation of our CVPR 2020 paper:
+This is a modified version of Fast-MVSNet with the addition of gt_depth dimension (2x downscaled & 4x upscaled) directly into the input images.
+
+Based on CVPR 2020 paper:
 
 [Fast-MVSNet: Sparse-to-Dense Multi-View Stereo With Learned Propagation and Gauss-Newton Refinement](https://arxiv.org/pdf/2003.13017.pdf)
 
@@ -9,7 +11,7 @@ Zehao Yu,
 
 ## How to use
 ```bash
-git clone git@github.com:svip-lab/FastMVSNet.git
+git clone https://github.com/ohrmuzd/FastMVSNet
 ```
 ### Installation
  ```bash
@@ -40,14 +42,3 @@ python tools/depthfusion.py -f dtu -n flow2
 
 ## Acknowledgements
 Most of the code is borrowed from [PointMVSNet](https://github.com/callmeray/PointMVSNet). We thank Rui Chen for his great works and repos.
-
-## Citation
-Please cite our paper for any purpose of usage.
-```
-@inproceedings{Yu_2020_fastmvsnet,
-  author    = {Zehao Yu and Shenghua Gao},
-  title     = {Fast-MVSNet: Sparse-to-Dense Multi-View Stereo With Learned Propagation and Gauss-Newton Refinement},
-  booktitle = {CVPR},
-  year      = {2020}
-}
-```
