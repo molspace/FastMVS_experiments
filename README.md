@@ -1,4 +1,4 @@
-# Fast-MVSNet experiments
+# FastMVS experiments
 
 This is a modified version of Fast-MVSNet for Deep Learning course project 2020.
 
