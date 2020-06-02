@@ -23,6 +23,10 @@ pip install -r requirements.txt
 * Train the network
 
     ```python fastmvsnet/train.py --cfg configs/dtu.yaml```
+
+```python fastmvsnet/train.py --cfg configs/dtu.yaml```
+
+```python fastmvsnet/train.py --cfg configs/dtu.yaml```
   
     You could change the batch size in the configuration file according to your own pc.
 
