@@ -20,11 +20,15 @@ pip install -r requirements.txt
 * Download the preprocessed [DTU training data](https://drive.google.com/file/d/1eDjh-_bxKKnEuz5h-HXS7EDJn59clx6V/view) from [MVSNet](https://github.com/YoYo000/MVSNet) and unzip it to ```data/dtu```.
 * Train the network
 
+
     ```python fastmvsnet/train.py --cfg configs/dtu.yaml``` - for original FastMVSNet
+
 
     ```python fastmvsnet/train1.py --cfg configs/dtu.yaml``` - for FastMVSNet with gt_depth directly added into the input as another dimension
 
+
     ```python fastmvsnet/train2.py --cfg configs/dtu.yaml``` - for FastMVSNet with gt_depth features extracted separately and concatenated to image features  
+  
   
     You could change the batch size in the configuration file according to your own pc.
 
