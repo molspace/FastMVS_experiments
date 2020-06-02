@@ -278,7 +278,7 @@ def main():
     output_dir = cfg.OUTPUT_DIR
     if output_dir:
         config_path = osp.splitext(args.config_file)[0]
-        config_path = config_path.replace("configs", "outputs")
+        config_path = config_path.replace("configs", "outputs2")
         output_dir = output_dir.replace('@', config_path)
         mkdir(output_dir)
 
