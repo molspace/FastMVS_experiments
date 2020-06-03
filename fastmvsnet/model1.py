@@ -33,10 +33,10 @@ class FastMVSNet(nn.Module):
         img_list = data_batch["img_list"]
         batch_size, num_view, img_channel, img_height, img_width = list(img_list.size())
         input_depth_list = data_batch['input_depth_list']
-        input_depth_shape = input_depth_list.shape
-        img_list_shape = img_list.shape
-        downscale = 0.5
-        input_depth_list = F.interpolate(F.interpolate(input_depth_list, (input_depth_shape[2], int(input_depth_shape[3]*downscale), int(input_depth_shape[4]*downscale))), (input_depth_shape[2], img_list_shape[3], img_list_shape[4]))
+        # input_depth_shape = input_depth_list.shape
+        # img_list_shape = img_list.shape
+        # downscale = 0.5
+        # input_depth_list = F.interpolate(F.interpolate(input_depth_list, (input_depth_shape[2], int(input_depth_shape[3]*downscale), int(input_depth_shape[4]*downscale))), (input_depth_shape[2], img_list_shape[3], img_list_shape[4]))
         img_list = torch.cat((img_list, input_depth_list), dim=2)
         cam_params_list = data_batch["cam_params_list"]
         cam_extrinsic = cam_params_list[:, :, 0, :3, :4].clone()  # (B, V, 3, 4)
