@@ -31,16 +31,14 @@ class FastMVSNet(nn.Module):
     def forward(self, data_batch, img_scales, inter_scales, isGN, isTest=False):
         preds = collections.OrderedDict()
         img_list = data_batch["img_list"]
-        #print("img_list", img_list.shape)
-        
         batch_size, num_view, img_channel, img_height, img_width = list(img_list.size())
-        gt_depth_img = data_batch['gt_depth_img']
-        gt_depth_img = F.interpolate(F.interpolate(gt_depth_img, scale_factor=0.5), scale_factor=8)
-        gt_depth_img = gt_depth_img.unsqueeze(1).expand(-1, num_view, -1, -1, -1)
-        #print("gt_depth_img", gt_depth_img.shape)
-        img_list = torch.cat((img_list, gt_depth_img), dim=2)
+        input_depth_list = data_batch['input_depth_list']
+        input_depth_shape = input_depth_list.shape
+        img_list_shape = img_list.shape
+        downscale = 0.5
+        input_depth_list = F.interpolate(F.interpolate(input_depth_list, (input_depth_shape[2], int(input_depth_shape[3]*downscale), int(input_depth_shape[4]*downscale))), (input_depth_shape[2], img_list_shape[3], img_list_shape[4]))
+        img_list = torch.cat((img_list, input_depth_list), dim=2)
         cam_params_list = data_batch["cam_params_list"]
-
         cam_extrinsic = cam_params_list[:, :, 0, :3, :4].clone()  # (B, V, 3, 4)
         R = cam_extrinsic[:, :, :3, :3]
         t = cam_extrinsic[:, :, :3, 3].unsqueeze(-1)
@@ -393,5 +391,3 @@ def build_pointmvsnet(cfg):
     )
 
     return net, loss_fn, metric_fn
-
-
