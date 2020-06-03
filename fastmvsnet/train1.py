@@ -16,7 +16,7 @@ from fastmvsnet.utils.torch_utils import set_random_seed
 from fastmvsnet.model1 import build_pointmvsnet as build_model
 from fastmvsnet.solver import build_optimizer, build_scheduler
 from fastmvsnet.utils.checkpoint import Checkpointer
-from fastmvsnet.dataset import build_data_loader
+from fastmvsnet.dataset1 import build_data_loader
 from fastmvsnet.utils.tensorboard_logger import TensorboardLogger
 from fastmvsnet.utils.metric_logger import MetricLogger
 from fastmvsnet.utils.file_logger import file_logger
