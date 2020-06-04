@@ -40,20 +40,21 @@ def scale_image(image, scale=1, interpolation='linear'):
         return cv2.resize(image, None, fx=scale, fy=scale, interpolation=cv2.INTER_NEAREST)
 
 
-def scale_dtu_input(images, cams, depth_image=None, scale=1):
+def scale_dtu_input(images, input_depth_images, cams, depth_image=None, scale=1):
     """ resize input to fit into the memory """
     for view in range(len(images)):
         images[view] = scale_image(images[view], scale=scale)
+        input_depth_images[view] = scale_image(input_depth_images[view], scale=scale)
         cams[view] = scale_camera(cams[view], scale=scale)
 
     if depth_image is None:
-        return images, cams
+        return images, input_depth_images, cams
     else:
         depth_image = scale_image(depth_image, scale=scale, interpolation='nearest')
-        return images, cams, depth_image
+        return images, input_depth_images, cams, depth_image
 
 
-def crop_dtu_input(images, cams, height, width, base_image_size, depth_image=None):
+def crop_dtu_input(images, input_depth_images, cams, height, width, base_image_size, depth_image=None):
     """ resize images and cameras to fit the network (can be divided by base image size) """
 
     # crop images and cameras
@@ -74,12 +75,13 @@ def crop_dtu_input(images, cams, height, width, base_image_size, depth_image=Non
         finish_h = start_h + new_h
         finish_w = start_w + new_w
         images[view] = images[view][start_h:finish_h, start_w:finish_w]
+        input_depth_images[view] = input_depth_images[view][start_h:finish_h, start_w:finish_w]
         cams[view][1][0][2] = cams[view][1][0][2] - start_w
         cams[view][1][1][2] = cams[view][1][1][2] - start_h
 
     # crop depth image
     if not depth_image is None:
         depth_image = depth_image[start_h:finish_h, start_w:finish_w]
-        return images, cams, depth_image
+        return images, input_depth_images, cams, depth_image
     else:
-        return images, cams
+        return images, input_depth_images, cams

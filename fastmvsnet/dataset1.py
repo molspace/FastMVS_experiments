@@ -43,12 +43,12 @@ class DTU_Train_Val_Set(Dataset):
         self.cluster_file_path = osp.join(root_dir, self.cluster_file_path)
         self.cluster_list = open(self.cluster_file_path).read().split()
         # self.cluster_list =
-        assert (dataset_name in ["train", "valid"]), "Unknown dataset_name: {}".format(dataset_name)
+        assert (dataset_name in ["train", "val"]), "Unknown dataset_name: {}".format(dataset_name)
 
         if dataset_name == "train":
             self.data_set = self.training_set
             self.lighting_set = self.training_lighting_set
-        elif dataset_name == "valid":
+        elif dataset_name == "val":
             self.data_set = self.validation_set
             self.lighting_set = self.validation_lighting_set
 
@@ -198,7 +198,7 @@ class DTU_Test_Set(Dataset):
                  interval_scale=1.6,
                  base_image_size=64,
                  depth_folder="",
-                 input_depth_folder=""):
+                 input_depth_folder="input_depth"):
 
         self.root_dir = root_dir
         self.num_view = num_view
@@ -226,7 +226,7 @@ class DTU_Test_Set(Dataset):
             image_folder = osp.join(self.root_dir, "Eval/Rectified/scan{}".format(ind))
             cam_folder = osp.join(self.root_dir, "Cameras")
             depth_folder = osp.join(self.depth_folder, "scan{}".format(ind))
-            input_depth_folder = osp.join(self.input_depth_folder, "scan{}".format(ind))
+            input_depth_folder = osp.join(self.root_dir, "input_depth/scan{}".format(ind))
 
             for lighting_ind in lighting_set:
                 # for each reference image
@@ -313,7 +313,7 @@ class DTU_Test_Set(Dataset):
             for input_depth_path in paths["view_input_depth_paths"]:
                 input_depth_images.append(np.zeros((self.height, self.width), np.float))
 
-        ref_input_depth = input_depth_images[0].copy()
+#         ref_input_depth = input_depth_images[0].copy()
 
         h_scale = float(self.height) / images[0].shape[0]
         w_scale = float(self.width) / images[0].shape[1]
@@ -323,19 +323,19 @@ class DTU_Test_Set(Dataset):
         resize_scale = h_scale
         if w_scale > h_scale:
             resize_scale = w_scale
-        scaled_input_images, scaled_input_cams, ref_depth, ref_input_depth = scale_dtu_input(images, cams, depth_image=ref_depth, input_depth_image=ref_input_depth, scale=resize_scale)
+        scaled_input_images, scaled_input_depths, scaled_input_cams, ref_depth = scale_dtu_input(images, input_depth_images, cams, depth_image=ref_depth, scale=resize_scale)
 
         # crop to fit network
-        croped_images, croped_cams, ref_depth, ref_input_depth = crop_dtu_input(scaled_input_images, scaled_input_cams,
+        croped_images, cropped_input_depths, croped_cams, ref_depth = crop_dtu_input(scaled_input_images, scaled_input_depths, scaled_input_cams,
                                                                height=self.height, width=self.width,
                                                                base_image_size=self.base_image_size,
-                                                               depth_image=ref_depth, input_depth_image=ref_input_depth)
+                                                               depth_image=ref_depth)
         ref_image = croped_images[0].copy()
         for i, image in enumerate(croped_images):
             croped_images[i] = norm_image(image)
 
         depth_list = np.stack(depth_images, axis=0)
-        input_depth_list = np.stack(input_depth_images, axis=0)
+        input_depth_list = np.stack(cropped_input_depths, axis=0)
         img_list = np.stack(croped_images, axis=0)
         cam_params_list = np.stack(croped_cams, axis=0)
         # cam_pos_list = np.stack(camspos, axis=0)
@@ -350,7 +350,7 @@ class DTU_Test_Set(Dataset):
             "cam_params_list": cam_params_list,
             "gt_depth_img": ref_depth,
             "depth_list": depth_list,
-            "gt_input_depth_img": ref_input_depth,
+#             "gt_input_depth_img": ref_input_depth,
             "input_depth_list": input_depth_list,
             "ref_img_path": paths["view_image_paths"][0],
             "ref_img": ref_image,
