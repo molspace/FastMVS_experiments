@@ -9,7 +9,7 @@ Based on CVPR 2020 paper:
 
 ## How to use
 ```bash
-git clone https://github.com/ohrmuzd/FastMVS_experiments
+git clone https://github.com/molspace/FastMVS_experiments
 ```
 ### Installation
  ```bash
