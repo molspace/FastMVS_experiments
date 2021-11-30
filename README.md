@@ -1,6 +1,6 @@
 # FastMVS experiments
 
-This repository is a modified version of Fast-MVSNet for Deep Learning course project "How good MVSNets are at Depth Fusion".
+This repository contains the code to reproduce the results of Deep Learning course project "How good MVSNets are at Depth Fusion?".
 
 Based on CVPR 2020 paper:
 
