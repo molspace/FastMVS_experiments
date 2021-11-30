@@ -30,7 +30,7 @@ pip install -r requirements.txt
     ```python fastmvsnet/train2.py --cfg configs/dtu.yaml``` - for FastMVSNet with gt_depth features extracted separately and concatenated to image features  
   
   
-    You could change the batch size in the configuration file according to your own pc.
+    You can change the batch size in the configuration file according to your own pc.
 
 ### Testing
 * Download the [rectified images](http://roboimagedata2.compute.dtu.dk/data/MVS/Rectified.zip) from [DTU benchmark](http://roboimagedata.compute.dtu.dk/?page_id=36) and unzip it to ```data/dtu/Eval```.
